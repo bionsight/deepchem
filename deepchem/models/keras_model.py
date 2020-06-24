@@ -425,8 +425,6 @@ class KerasModel(Model):
       one or more functions of the form f(model, step) that will be invoked after
       every step.  This can be used to perform validation, logging, etc.
    """
-    if not self.built:
-      self.build()
     dataset = NumpyDataset(X, y, w)
     return self.fit(
         dataset,
