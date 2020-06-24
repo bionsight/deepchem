@@ -1,21 +1,9 @@
 #!/usr/bin/env bash
 # Used to make a conda environment with deepchem
 
-# Change commented out line For gpu tensorflow
-#export tensorflow=tensorflow-gpu
-export tensorflow=tensorflow
-
-if [ -z "$gpu" ]
-then
-    export tensorflow=tensorflow
-    echo "Using Tensorflow (CPU MODE) by default."
-elif [ "$gpu" == 1 ]
-then
-    export tensorflow=tensorflow-gpu
-    echo "Using Tensorflow (GPU MODE)."
-else
-    echo "Using Tensorflow (CPU MODE) by default."
-fi
+# This line is needed for using conda activate
+# This command is nearly equal to `conda init` command
+source $(conda info --root)/etc/profile.d/conda.sh
 
 if [ -z "$python_version" ]
 then
@@ -31,35 +19,21 @@ then
 else
     export envname=$1
     conda create -y --name $envname python=$python_version
-    source activate $envname
-fi
-
-unamestr=`uname`
-if [[ "$unamestr" == 'Darwin' ]]; then
-   source activate root
-   conda install -y -q conda=4.3.25
-   source activate $envname
+    conda activate $envname
 fi
 
 yes | pip install --upgrade pip
 conda install -y -q -c deepchem -c rdkit -c conda-forge -c omnia \
-    mdtraj \
-    pdbfixer \
-    rdkit \
-    joblib \
-    scikit-learn \
-    networkx \
-    pillow \
-    pandas \
-    nose \
-    nose-timer \
-    flaky \
-    zlib \
-    requests \
-    py-xgboost \
-    simdna \
-    setuptools \
     biopython \
-    numpy
-#yes | pip install $tensorflow==2.1.0 tensorflow-probability
-yes | pip install --pre -U $tensorflow tensorflow-probability
+    mdtraj \
+    networkx \
+    openmm \
+    pdbfixer \
+    pillow \
+    py-xgboost \
+    rdkit \
+    simdna \
+    pytest \
+    pytest-cov \
+    flaky
+yes | pip install -U tensorflow tensorflow-probability

@@ -6,7 +6,7 @@ from tensorflow.keras.layers import Input, Dense, GRU, Reshape, Softmax
 import numpy as np
 import tensorflow as tf
 import unittest
-from nose.plugins.attrib import attr
+import pytest
 
 
 class TestA2C(unittest.TestCase):
@@ -162,7 +162,7 @@ class TestA2C(unittest.TestCase):
     assert np.array_equal(prob3, prob4)
     assert not np.array_equal(prob2, prob3)
 
-  @attr('slow')
+  @pytest.mark.slow
   def test_hindsight(self):
     """Test Hindsight Experience Replay."""
 
@@ -206,6 +206,7 @@ class TestA2C(unittest.TestCase):
           pos_after_action = new_state[:2] + self.moves[action]
           if np.array_equal(pos_after_action, goal_pos):
             rewards.append(1)
+            break
           else:
             rewards.append(0)
         return new_states, rewards
@@ -228,14 +229,12 @@ class TestA2C(unittest.TestCase):
     # Optimize it.
 
     env = TestEnvironment()
-    learning_rate = PolynomialDecay(
-        initial_rate=0.0005, final_rate=0.0002, decay_steps=2000000)
     a2c = dc.rl.A2C(
         env,
         TestPolicy(),
         use_hindsight=True,
-        optimizer=Adam(learning_rate=learning_rate))
-    a2c.fit(2000000)
+        optimizer=Adam(learning_rate=0.001))
+    a2c.fit(1000000)
 
     # Try running it a few times and see if it succeeds.
 

@@ -1,19 +1,3 @@
-param($gpu)
-if ($gpu -eq 1)
-{
-    $tensorflow = "tensorflow-gpu"
-    echo "Using Tensorflow (GPU MODE)."
-}
-elseif($gpu -eq 0)
-{
-    $tensorflow = "tensorflow"
-    echo "Using Tensorflow (CPU MODE)."
-}
-else
-{
-    $tensorflow = "tensorflow"
-    echo "Using Tensorflow (CPU MODE) by default."
-}
 if ($python_version)
 {
     echo "Using python "$python_version". But recommended to use python 3.6."
@@ -36,23 +20,17 @@ else
 }
 
 conda install -y -q -c deepchem -c rdkit -c conda-forge -c omnia `
-    mdtraj `
-    pdbfixer `
-    rdkit `
-    joblib `
-    scikit-learn `
-    networkx `
-    pillow `
-    pandas `
-    nose `
-    nose-timer `
-    flaky `
-    zlib `
-    requests `
-    py-xgboost `
-    simdna `
-    setuptools `
     biopython `
-    numpy
+    mdtraj `
+    networkx `
+    openmm `
+    pdbfixer `
+    pillow `
+    py-xgboost `
+    rdkit `
+    simdna `
+    pytest `
+    pytest-cov `
+    flaky
 
-pip install --pre -U $tensorflow tensorflow-probability
+pip install -U tensorflow tensorflow-probability
