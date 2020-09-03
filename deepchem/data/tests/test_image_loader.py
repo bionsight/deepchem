@@ -7,6 +7,7 @@ import tempfile
 from scipy import misc
 import deepchem as dc
 import zipfile
+import numpy as np
 
 
 class TestImageLoader(unittest.TestCase):
@@ -29,7 +30,6 @@ class TestImageLoader(unittest.TestCase):
     Image.fromarray(self.face).save(self.face_copy_path)
 
     # Create zip of image file
-    #self.zip_path = "/home/rbharath/misc/cells.zip"
     self.zip_path = os.path.join(self.data_dir, "face.zip")
     zipf = zipfile.ZipFile(self.zip_path, "w", zipfile.ZIP_DEFLATED)
     zipf.write(self.face_path)
@@ -61,6 +61,13 @@ class TestImageLoader(unittest.TestCase):
     dataset = loader.featurize(self.face_path)
     # These are the known dimensions of face.png
     assert dataset.X.shape == (1, 768, 1024, 3)
+
+  def test_png_simple_load_with_labels(self):
+    loader = dc.data.ImageLoader()
+    dataset = loader.featurize((self.face_path, np.array(1)))
+    # These are the known dimensions of face.png
+    assert dataset.X.shape == (1, 768, 1024, 3)
+    assert (dataset.y == np.ones((1,))).all()
 
   def test_tif_simple_load(self):
     loader = dc.data.ImageLoader()

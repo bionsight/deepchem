@@ -54,7 +54,7 @@ File Handling
 
 .. autofunction:: deepchem.utils.save.load_csv_files
 
-.. autofunction:: deepchem.utils.save.save_metadata
+.. autofunction:: deepchem.utils.save.load_json_files
 
 .. autofunction:: deepchem.utils.save.load_from_disk
 
@@ -73,18 +73,37 @@ Molecular Utilities
 .. autoclass:: deepchem.utils.conformers.ConformerGenerator
   :members:
 
-.. autoclass:: deepchem.utils.rdkit_util.MoleculeLoadException
+.. autoclass:: deepchem.utils.rdkit_utils.MoleculeLoadException
   :members:
 
-.. autofunction:: deepchem.utils.rdkit_util.get_xyz_from_mol
+.. autofunction:: deepchem.utils.rdkit_utils.get_xyz_from_mol
 
-.. autofunction:: deepchem.utils.rdkit_util.add_hydrogens_to_mol
+.. autofunction:: deepchem.utils.rdkit_utils.add_hydrogens_to_mol
 
-.. autofunction:: deepchem.utils.rdkit_util.compute_charges
+.. autofunction:: deepchem.utils.rdkit_utils.compute_charges
 
-.. autofunction:: deepchem.utils.rdkit_util.load_molecule
+.. autofunction:: deepchem.utils.rdkit_utils.load_molecule
 
-.. autofunction:: deepchem.utils.rdkit_util.write_molecule
+.. autofunction:: deepchem.utils.rdkit_utils.write_molecule
+
+Molecular Fragment Utilities
+----------------------------
+
+It's often convenient to manipulate subsets of a molecule. The :code:`MolecularFragment` class aids in such manipulations.
+
+.. autoclass:: deepchem.utils.fragment_utils.MolecularFragment
+  :members:
+
+.. autoclass:: deepchem.utils.fragment_utils.AtomShim
+  :members:
+
+.. autofunction:: deepchem.utils.fragment_utils.strip_hydrogens
+
+.. autofunction:: deepchem.utils.fragment_utils.merge_molecular_fragments
+
+.. autofunction:: deepchem.utils.fragment_utils.get_contact_atom_indices
+
+.. autofunction:: deepchem.utils.fragment_utils.reduce_molecular_complex_to_contacts
 
 Coordinate Box Utilities
 ------------------------
@@ -111,16 +130,13 @@ Evaluation Utils
 
 .. autofunction:: deepchem.utils.evaluate.relative_difference
 
-.. autofunction:: deepchem.utils.evaluate.threshold_predictions
 
 Genomic Utilities
 -----------------
 
-.. autofunction:: deepchem.utils.genomics.seq_one_hot_encode
+.. autofunction:: deepchem.utils.genomics_utils.seq_one_hot_encode
 
-.. autofunction:: deepchem.utils.genomics.encode_fasta_sequence
-
-.. autofunction:: deepchem.utils.genomics.encode_bio_sequence
+.. autofunction:: deepchem.utils.genomics_utils.encode_bio_sequence
 
 
 Geometry Utilities
@@ -153,3 +169,42 @@ Voxel Utils
 .. autofunction:: deepchem.utils.voxel_utils.convert_atom_pair_to_voxel
 
 .. autofunction:: deepchem.utils.voxel_utils.voxelize
+
+
+Graph Convolution Utilities
+---------------------------
+
+.. autofunction:: deepchem.utils.molecule_feature_utils.one_hot_encode
+
+.. autofunction:: deepchem.utils.molecule_feature_utils.get_atom_type_one_hot
+
+.. autofunction:: deepchem.utils.molecule_feature_utils.construct_hydrogen_bonding_info
+
+.. autofunction:: deepchem.utils.molecule_feature_utils.get_atom_hydrogen_bonding_one_hot
+
+.. autofunction:: deepchem.utils.molecule_feature_utils.get_atom_is_in_aromatic_one_hot
+
+.. autofunction:: deepchem.utils.molecule_feature_utils.get_atom_hybridization_one_hot
+
+.. autofunction:: deepchem.utils.molecule_feature_utils.get_atom_total_num_Hs_one_hot
+
+.. autofunction:: deepchem.utils.molecule_feature_utils.get_atom_chirality_one_hot
+
+.. autofunction:: deepchem.utils.molecule_feature_utils.get_atom_formal_charge
+
+.. autofunction:: deepchem.utils.molecule_feature_utils.get_atom_partial_charge
+
+.. autofunction:: deepchem.utils.molecule_feature_utils.get_atom_ring_size_one_hot
+
+.. autofunction:: deepchem.utils.molecule_feature_utils.get_atom_total_degree_one_hot
+
+.. autofunction:: deepchem.utils.molecule_feature_utils.get_bond_type_one_hot
+
+.. autofunction:: deepchem.utils.molecule_feature_utils.get_bond_is_in_same_ring_one_hot
+
+.. autofunction:: deepchem.utils.molecule_feature_utils.get_bond_is_conjugated_one_hot
+
+.. autofunction:: deepchem.utils.molecule_feature_utils.get_bond_stereo_one_hot
+
+.. autofunction:: deepchem.utils.molecule_feature_utils.get_bond_graph_distance_one_hot
+

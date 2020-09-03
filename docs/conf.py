@@ -62,6 +62,12 @@ html_theme_path = [sphinx_rtd_theme.get_html_theme_path()]
 # so a file named "default.css" will overwrite the builtin "default.css".
 html_static_path = ['_static']
 
+html_context = {
+    'css_files': [
+        '_static/theme_overrides.css',  # override wide tables in RTD theme
+    ],
+}
+
 # The name of an image file (relative to this directory) to place at the top
 # of the sidebar.
 html_logo = '_static/logo.png'
@@ -71,6 +77,7 @@ html_logo = '_static/logo.png'
 
 import inspect
 from os.path import relpath, dirname
+import deepchem
 
 for name in ['sphinx.ext.linkcode', 'numpydoc.linkcode']:
   try:
@@ -134,15 +141,12 @@ def linkcode_resolve(domain, info):
   fn = relpath(
       fn, start=os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
-  return "https://github.com/deepchem/deepchem/blob/master/%s%s" % (fn,
-                                                                    linespec)
-  # TODO: Should we do similar dev handling?
-  #if 'dev' in numpy.__version__:
-  #  return "https://github.com/numpy/numpy/blob/master/numpy/%s%s" % (
-  #       fn, linespec)
-  #else:
-  #    return "https://github.com/numpy/numpy/blob/v%s/numpy/%s%s" % (
-  #       numpy.__version__, fn, linespec)
+  if 'dev' in deepchem.__version__:
+    return "https://github.com/deepchem/deepchem/blob/master/%s%s" % \
+      (fn, linespec)
+  else:
+    return "https://github.com/deepchem/deepchem/blob/%s/%s%s" % \
+      (deepchem.__version__, fn, linespec)
 
 
 # Document __init__ methods

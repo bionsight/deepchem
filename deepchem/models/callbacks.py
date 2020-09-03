@@ -1,8 +1,6 @@
 """
 Callback functions that can be invoked while fitting a KerasModel.
 """
-
-import tensorflow as tf
 import sys
 
 
@@ -81,6 +79,9 @@ class ValidationCallback(object):
     if model.tensorboard:
       for key in scores:
         model._log_value_to_tensorboard(tag=key, simple_value=scores[key])
+    if model.wandb:
+      import wandb
+      wandb.log(scores, step=step)
     if self.save_dir is not None:
       score = scores[self.metrics[self.save_metric].name]
       if not self.save_on_minimum:
