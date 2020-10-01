@@ -199,6 +199,15 @@ Losses
 .. autoclass:: deepchem.models.losses.SparseSoftmaxCrossEntropy
   :members:
 
+.. autoclass:: deepchem.models.losses.VAE_ELBO
+  :members:
+
+.. autoclass:: deepchem.models.losses.VAE_KLDivergence
+  :members:
+
+.. autoclass:: deepchem.models.losses.ShannonEntropy
+  :members:
+
 Optimizers
 ----------
 
@@ -410,7 +419,7 @@ for any application requiring a probabilistic model with these capabilities, e.g
 .. autoclass:: deepchem.models.normalizing_flows.NormalizingFlowModel
   :members:
   
-=======
+
 PyTorch Models
 ==============
 
