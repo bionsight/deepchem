@@ -169,9 +169,7 @@ class KerasModel(Model):
       like a printout every 10 batch steps, you'd set
       `log_frequency=10` for example.
     """
-    super(KerasModel, self).__init__(
-        model_instance=model, model_dir=model_dir, **kwargs)
-    self.model = model
+    super(KerasModel, self).__init__(model=model, model_dir=model_dir, **kwargs)
     if isinstance(loss, Loss):
       self._loss_fn: LossFn = _StandardLoss(model, loss)
     else:
@@ -433,8 +431,7 @@ class KerasModel(Model):
       for c in callbacks:
         c(self, current_step)
       if self.tensorboard and should_log:
-        with self._summary_writer.as_default():
-          tf.summary.scalar('loss', batch_loss, current_step)
+        self._log_scalar_to_tensorboard('loss', batch_loss, current_step)
       if self.wandb and should_log:
         wandb.log({'loss': batch_loss}, step=current_step)
 
@@ -561,9 +558,11 @@ class KerasModel(Model):
       returns the values of the uncertainty outputs.
     other_output_types: list, optional
       Provides a list of other output_types (strings) to predict from model.
-    Returns:
-      a NumPy array of the model produces a single output, or a list of arrays
-      if it produces multiple outputs
+
+    Returns
+    -------
+    a NumPy array of the model produces a single output, or a list of arrays
+    if it produces multiple outputs
     """
     results: Optional[List[np.ndarray]] = None
     variances: Optional[List[np.ndarray]] = None
@@ -786,7 +785,7 @@ class KerasModel(Model):
     if it produces multiple outputs
     """
     generator = self.default_generator(
-        dataset, mode='predict', pad_batches=False)
+        dataset, mode='predict', deterministic=True, pad_batches=False)
     return self.predict_on_generator(
         generator,
         transformers=transformers,
@@ -1074,6 +1073,11 @@ class KerasModel(Model):
   def get_global_step(self) -> int:
     """Get the number of steps of fitting that have been performed."""
     return int(self._global_step)
+
+  def _log_scalar_to_tensorboard(self, name: str, value: Any, step: int):
+    """Log a scalar value to Tensorboard."""
+    with self._summary_writer.as_default():
+      tf.summary.scalar(name, value, step)
 
   def _create_assignment_map(self,
                              source_model: "KerasModel",

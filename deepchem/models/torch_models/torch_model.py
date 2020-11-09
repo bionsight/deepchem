@@ -157,8 +157,7 @@ class TorchModel(Model):
       the device on which to run computations.  If None, a device is
       chosen automatically.
     """
-    super(TorchModel, self).__init__(
-        model_instance=model, model_dir=model_dir, **kwargs)
+    super(TorchModel, self).__init__(model=model, model_dir=model_dir, **kwargs)
     if isinstance(loss, Loss):
       self._loss_fn: LossFn = _StandardLoss(model, loss)
     else:
@@ -403,7 +402,7 @@ class TorchModel(Model):
       for c in callbacks:
         c(self, current_step)
       if self.tensorboard and should_log:
-        self._summary_writer.add_scalar('loss', batch_loss, current_step)
+        self._log_scalar_to_tensorboard('loss', batch_loss, current_step)
       if self.wandb and should_log:
         wandb.log({'loss': batch_loss}, step=current_step)
 
@@ -983,6 +982,10 @@ class TorchModel(Model):
   def get_global_step(self) -> int:
     """Get the number of steps of fitting that have been performed."""
     return self._global_step
+
+  def _log_scalar_to_tensorboard(self, name: str, value: Any, step: int):
+    """Log a scalar value to Tensorboard."""
+    self._summary_writer.add_scalar(name, value, step)
 
   def _create_assignment_map(self,
                              source_model: "TorchModel",

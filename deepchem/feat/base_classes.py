@@ -134,18 +134,19 @@ class Featurizer(object):
 
     override_args_info = ''
     for arg_name, default in zip(args_names, args_default_values):
-      arg_value = self.__dict__[arg_name]
-      # validation
-      # skip list
-      if isinstance(arg_value, list):
-        continue
-      if isinstance(arg_value, str):
-        # skip path string
-        if "\\/." in arg_value or "/" in arg_value or '.' in arg_value:
+      if arg_name in self.__dict__:
+        arg_value = self.__dict__[arg_name]
+        # validation
+        # skip list
+        if isinstance(arg_value, list):
           continue
-      # main logic
-      if default != arg_value:
-        override_args_info += '_' + arg_name + '_' + str(arg_value)
+        if isinstance(arg_value, str):
+          # skip path string
+          if "\\/." in arg_value or "/" in arg_value or '.' in arg_value:
+            continue
+        # main logic
+        if default != arg_value:
+          override_args_info += '_' + arg_name + '_' + str(arg_value)
     return self.__class__.__name__ + override_args_info
 
 
@@ -232,7 +233,7 @@ class MolecularFeaturizer(Featurizer):
   The subclasses of this class require RDKit to be installed.
   """
 
-  def featurize(self, molecules, log_every_n=1000):
+  def featurize(self, molecules, log_every_n=1000) -> np.ndarray:
     """Calculate features for molecules.
 
     Parameters
@@ -254,7 +255,7 @@ class MolecularFeaturizer(Featurizer):
       from rdkit.Chem import rdmolops
       from rdkit.Chem.rdchem import Mol
     except ModuleNotFoundError:
-      raise ValueError("This class requires RDKit to be installed.")
+      raise ImportError("This class requires RDKit to be installed.")
 
     # Special case handling of single molecule
     if isinstance(molecules, str) or isinstance(molecules, Mol):
@@ -336,7 +337,7 @@ class MaterialStructureFeaturizer(Featurizer):
     try:
       from pymatgen import Structure
     except ModuleNotFoundError:
-      raise ValueError("This class requires pymatgen to be installed.")
+      raise ImportError("This class requires pymatgen to be installed.")
 
     structures = list(structures)
     features = []
@@ -399,7 +400,7 @@ class MaterialCompositionFeaturizer(Featurizer):
     try:
       from pymatgen import Composition
     except ModuleNotFoundError:
-      raise ValueError("This class requires pymatgen to be installed.")
+      raise ImportError("This class requires pymatgen to be installed.")
 
     compositions = list(compositions)
     features = []
